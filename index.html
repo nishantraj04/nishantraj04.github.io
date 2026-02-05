@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nishant Raj | FumbleBee</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dp-dark': '#0f0f0f',
+                        'dp-red': '#890000',
+                        'dp-bright-red': '#e3001b',
+                        'dp-grey': '#2a2a2a',
+                        'dp-white': '#f5f5f5',
+                    },
+                    fontFamily: {
+                        'hero': ['Anton', 'sans-serif'],
+                        'comic': ['Bangers', 'cursive'],
+                        'body': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #f5f5f5;
+            cursor: none; /* Custom cursor */
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #890000; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e3001b; 
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #e3001b;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e3001b;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        /* 3D Card Styles */
+        .perspective-container {
+            perspective: 1000px;
+        }
+        
+        .card-3d {
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+        
+        .flip-card-front {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+        }
+        
+        .flip-card-back {
+            background-color: #890000;
+            color: white;
+            transform: rotateY(180deg);
+            border: 1px solid #e3001b;
+        }
+
+        /* Glitch Effect for text */
+        .glitch {
+            position: relative;
+        }
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f0f0f;
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 #00fff9;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(13px, 9999px, 81px, 0); }
+            5% { clip: rect(79px, 9999px, 14px, 0); }
+            10% { clip: rect(36px, 9999px, 98px, 0); }
+            15% { clip: rect(15px, 9999px, 7px, 0); }
+            20% { clip: rect(98px, 9999px, 83px, 0); }
+            25% { clip: rect(42px, 9999px, 57px, 0); }
+            30% { clip: rect(62px, 9999px, 59px, 0); }
+            35% { clip: rect(21px, 9999px, 94px, 0); }
+            40% { clip: rect(8px, 9999px, 78px, 0); }
+            45% { clip: rect(58px, 9999px, 13px, 0); }
+            50% { clip: rect(96px, 9999px, 49px, 0); }
+            100% { clip: rect(55px, 9999px, 73px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            100% { clip: rect(21px, 9999px, 6px, 0); }
+        }
+
+        /* Comic Speech Bubble */
+        .speech-bubble {
+            position: relative;
+            background: #ffffff;
+            border-radius: .4em;
+            color: black;
+            font-family: 'Bangers', cursive;
+            letter-spacing: 1px;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-top-color: #ffffff;
+            border-bottom: 0;
+            border-left: 0;
+            margin-left: -10px;
+            margin-bottom: -20px;
+        }
+
+        .blood-splatter {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-dp-red selection:text-white">
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <nav class="fixed w-full z-50 mix-blend-difference px-6 py-4 flex justify-between items-center">
+        <div class="text-2xl font-hero tracking-wider text-white glitch" data-text="FumbleBee">FumbleBee</div>
+        <div class="hidden md:flex gap-8 font-bold text-sm tracking-widest uppercase">
+            <a href="#about" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Who?</a>
+            <a href="#projects" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Stuff I Made</a>
+            <a href="#experience" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">The Grind</a>
+            <a href="#contact" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Call Me</a>
+        </div>
+    </nav>
+
+    <section class="h-screen w-full flex items-center justify-center relative perspective-container overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-dp-dark"></div>
+        
+        <div class="absolute w-4 h-4 bg-dp-red rounded-full top-1/4 left-1/4 animate-float blur-[2px]"></div>
+        <div class="absolute w-8 h-8 bg-dp-dark border border-dp-red rounded-full bottom-1/3 right-1/4 animate-float animation-delay-2000 blur-[1px]"></div>
+        
+        <div class="z-10 text-center card-3d" id="hero-card">
+            <div class="mb-4 inline-block bg-dp-red text-white px-4 py-1 font-comic tracking-widest text-xl rotate-[-2deg] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]">
+                Learning Engineer
+            </div>
+            <h1 class="text-[12vw] leading-[0.85] font-hero uppercase text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-500 drop-shadow-[0_5px_5px_rgba(227,0,27,0.5)]">
+                MAXIMUM<br>EFFORT
+            </h1>
+            <p class="mt-8 text-xl text-gray-400 max-w-lg mx-auto font-light">
+                Hi, I'm <span class="text-dp-bright-red font-bold">Nishant Raj</span>. I break websites so I can fix them better.
+                <br><span class="text-xs text-gray-600">(Pre-final year CSE Student. Hire me, I cannot see unemployment anymore.)</span>
+            </p>
+            
+            <button onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})" 
+                class="mt-12 px-8 py-4 bg-transparent border-2 border-dp-red text-white font-bold uppercase tracking-widest hover:bg-dp-red hover:shadow-[0_0_30px_rgba(227,0,27,0.6)] transition-all duration-300 group">
+                See My Work 
+                <i data-lucide="arrow-down" class="inline-block ml-2 group-hover:translate-y-1 transition-transform"></i>
+            </button>
+        </div>
+
+        <div class="absolute bottom-10 right-10 hidden lg:block animate-float">
+            <div class="speech-bubble p-4 max-w-xs text-center shadow-xl rotate-[5deg]">
+                "This parallax effect? Totally necessary. Don't ask about the time taken."
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="min-h-screen py-20 px-6 relative bg-dp-dark border-t border-dp-grey">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            
+            <div class="relative group perspective-container">
+                <div class="card-3d border-4 border-dp-grey p-2 bg-[#1a1a1a] rotate-2 group-hover:rotate-0 transition-transform duration-500">
+                    <div class="h-[400px] w-full bg-gradient-to-tr from-dp-red to-black flex items-center justify-center overflow-hidden relative">
+                         <div class="absolute text-[10rem] font-hero text-white opacity-10 select-none"></div>
+                        <img src="profile.png" alt="Nishant Raj" class="w-full h-full object-cover opacity-80 mix-blend-overlay hover:opacity-100 hover:mix-blend-normal transition-all duration-500">
+                        
+                        <div class="absolute bottom-0 left-0 w-full p-4 bg-black/80 backdrop-blur-sm transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <p class="text-dp-bright-red font-comic text-xl">Warning: Caffeine Dependent</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#f5f5f5]/20 rotate-[-2deg] backdrop-blur-sm"></div>
+            </div>
+
+            <div>
+                <h2 class="text-6xl font-hero mb-8 text-white glitch" data-text="THE ORIGIN STORY">THE ORIGIN STORY</h2>
+                <div class="space-y-6 text-lg text-gray-300">
+                    <p class="border-l-4 border-dp-red pl-4">
+                        Look, I write code. I design things. Sometimes I make them move. 
+                        As a <span class="text-white font-bold">Computer Science Undergrad</span> and <span class="text-white font-bold">Graphic Designer</span>, 
+                        I bridge the gap between "Make it pretty" and "Make it work without exploding".
+                    </p>
+                    <p>
+                        I specialize in creating immersive web experiences that don't bore people to death. 
+                        My stack? React.js, Next.js, Node.js, and Java for when I feel like punishing myself.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <div class="bg-dp-grey p-4 rounded hover:bg-dp-red transition-colors group cursor-crosshair">
+                            <h3 class="font-hero text-2xl text-white">Languages</h3>
+                            <p class="text-sm text-gray-400 group-hover:text-white">Java, Python, C, SQL(MySQL)</p>
+                        </div>
+                        <div class="bg-dp-grey p-4 rounded hover:bg-dp-red transition-colors group cursor-crosshair">
+                            <h3 class="font-hero text-2xl text-white">Web Technologies</h3>
+                            <p class="text-sm text-gray-400 group-hover:text-white">HTML5, CSS3, React.js, Next.js</p>
+                        </div>
+                        <div class="bg-dp-grey p-4 rounded hover:bg-dp-red transition-colors group cursor-crosshair">
+                            <h3 class="font-hero text-2xl text-white">Tools</h3>
+                            <p class="text-sm text-gray-400 group-hover:text-white">GitHub, VS Code </p>
+                        </div>
+                        <div class="bg-dp-grey p-4 rounded hover:bg-dp-red transition-colors group cursor-crosshair">
+                            <h3 class="font-hero text-2xl text-white">Design</h3>
+                            <p class="text-sm text-gray-400 group-hover:text-white">Adobe Creative, Canva</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section id="projects" class="py-20 px-6 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-5xl md:text-7xl font-hero mb-4 text-center text-white"><span class="text-dp-red">MISSION</span> REPORT</h2>
+        <p class="text-center text-gray-400 mb-16 font-comic text-xl tracking-wide">"I did these. Totally legal."</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="h-[400px] w-full flip-card cursor-pointer">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front p-8">
+                        <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                            <i data-lucide="users" class="text-white w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-3xl font-hero text-white mb-2">TeamUp</h3>
+                        <p class="text-gray-400 text-sm">Hackathon Team Finder</p>
+                        <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
+                    </div>
+                    <div class="flip-card-back p-8">
+                        <h3 class="text-2xl font-hero mb-4">The Tech Stack</h3>
+                        <ul class="text-left space-y-2 mb-6 font-mono text-sm">
+                            <li>> React (Vite) + Custom CSS</li>
+                            <li>> Node.js + Express (Render)</li>
+                            <li>> MongoDB Atlas (Database)</li>
+                            <li>> Axios (API Calls)</li>
+                        </ul>
+                        <a href="https://team-up-project.vercel.app" target="_blank" class="bg-white text-dp-red px-6 py-2 font-bold uppercase text-sm hover:bg-gray-200 inline-block">
+                            View Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-[400px] w-full flip-card cursor-pointer">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front p-8">
+                        <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                            <i data-lucide="briefcase" class="text-white w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-3xl font-hero text-white mb-2">JOB HUNTER</h3>
+                        <p class="text-gray-400 text-sm">Application Tracker</p>
+                        <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
+                    </div>
+                    <div class="flip-card-back p-8">
+                        <h3 class="text-2xl font-hero mb-4">The Tech Stack</h3>
+                        <ul class="text-left space-y-2 mb-6 font-mono text-sm">
+                            <li>> React + TypeScript (UI)</li>
+                            <li>> Tailwind CSS (Styling)</li>
+                            <li>> Supabase + PostgreSQL (DB)</li>
+                            <li>> Vercel (Deployment)</li>
+                        </ul>
+                        <a href="https://job-tracker-six-iota.vercel.app" target="_blank" class="bg-white text-dp-red px-6 py-2 font-bold uppercase text-sm hover:bg-gray-200 inline-block">
+                            View Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-[400px] w-full flip-card cursor-pointer">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front p-8">
+                        <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                            <i data-lucide="palette" class="text-white w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-3xl font-hero text-white mb-2">Graphic Designs</h3>
+                        <p class="text-gray-400 text-sm">SOA English Café</p>
+                        <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
+                    </div>
+                    <div class="flip-card-back p-8">
+                        <h3 class="text-2xl font-hero mb-4">Visual Goodness</h3>
+                        <p class="text-sm mb-6">Posters, flyers, and event assets for "Dusshera Chronicles", "The Socrates Trial", "The Odyssey" etc.</p>
+                        <button class="bg-white text-dp-red px-6 py-2 font-bold uppercase text-sm hover:bg-gray-200">View Gallery</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    <section id="experience" class="py-20 px-6 bg-dp-dark relative overflow-hidden">
+        <div class="absolute top-0 right-0 text-[20rem] font-hero text-[#151515] select-none -z-10 leading-none">XP</div>
+        
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-5xl font-hero text-white mb-12 border-b-4 border-dp-red inline-block pb-2">EDUCATION</h2>
+            
+            <div class="space-y-12 border-l-2 border-gray-800 pl-8 ml-4 relative">
+                
+                <div class="relative group">
+                    <div class="absolute -left-[41px] top-0 w-6 h-6 bg-dp-red rounded-full border-4 border-dp-dark group-hover:scale-150 transition-transform"></div>
+                    <div class="bg-[#1a1a1a] p-6 rounded-lg border border-gray-800 hover:border-dp-red transition-colors shadow-lg hover:shadow-[5px_5px_0px_0px_rgba(227,0,27,1)] transform hover:-translate-y-1 transition-all duration-200">
+                        <span class="text-dp-red font-mono text-sm">2023-27 </span>
+                        <h3 class="text-2xl font-bold text-white mt-1">B. Tech (CSE)</h3>
+                        <p class="text-gray-400 text-sm font-light italic">ITER | SOA University | Bhubaneswar</p>
+                        <p class="mt-4 text-gray-300">Pre-final year Computer Science undergraduate bridging the gap between code and design as a Graphic Designer for the SOA English Café.</p>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <div class="absolute -left-[41px] top-0 w-6 h-6 bg-gray-600 rounded-full border-4 border-dp-dark group-hover:bg-dp-red transition-colors"></div>
+                    <div class="bg-[#1a1a1a] p-6 rounded-lg border border-gray-800 hover:border-dp-red transition-colors transform hover:-translate-y-1 transition-all duration-200">
+                        <span class="text-dp-red font-mono text-sm">2020-22</span>
+                        <h3 class="text-2xl font-bold text-white mt-1">12th (CBSE – PCM)</h3>
+                        <p class="text-gray-400 text-sm font-light italic">Chinmaya Vidyalaya, South Park | Jamshedpur</p>
+                        <p class="mt-4 text-gray-300">Developed rigorous problem-solving and logical reasoning skills through the PCM curriculum.</p>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <div class="absolute -left-[41px] top-0 w-6 h-6 bg-gray-600 rounded-full border-4 border-dp-dark group-hover:bg-dp-red transition-colors"></div>
+                    <div class="bg-[#1a1a1a] p-6 rounded-lg border border-gray-800 hover:border-dp-red transition-colors transform hover:-translate-y-1 transition-all duration-200">
+                        <span class="text-dp-red font-mono text-sm">2008-20</span>
+                        <h3 class="text-2xl font-bold text-white mt-1">10th (ICSE)</h3>
+                        <p class="text-gray-400 text-sm font-light italic"> Kerala Samajam Model School | Jamshedpur</p>
+                        <p class="mt-4 text-gray-300">Built a solid base in core sciences while developing strong communication skills under the ICSE board.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 bg-black relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <div>
+                    <h2 class="text-4xl font-hero text-white mb-8">THINGS I LIKE</h2>
+                    <div class="flex flex-wrap gap-4" id="interests-container">
+                        <span class="px-6 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer text-lg font-bold">💻 Coding</span>
+                        <span class="px-6 py-3 border border-dp-red rounded-full text-dp-red hover:bg-dp-red hover:text-white transition-colors duration-300 cursor-pointer text-lg font-bold">🚶 Having a Walk</span>
+                        <span class="px-6 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer text-lg font-bold">🎥 Watching Movies & Web Series</span>
+                        <span class="px-6 py-3 border border-dp-red rounded-full text-dp-red hover:bg-dp-red hover:text-white transition-colors duration-300 cursor-pointer text-lg font-bold">🎨 Graphic Design</span>
+                        <span class="px-6 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer text-lg font-bold">🐬 Animal Documentaries</span>
+                        <span class="px-6 py-3 border border-dp-red rounded-full text-dp-red hover:bg-dp-red hover:text-white transition-colors duration-300 cursor-pointer text-lg font-bold">😋 Fast Food</span>
+                    </div>
+                    
+                    <div class="mt-12 p-6 bg-dp-grey rounded border-l-8 border-dp-red transform rotate-1 hover:rotate-0 transition-transform">
+                        <h3 class="font-comic text-2xl text-dp-bright-red">ACHIEVEMENT UNLOCKED:</h3>
+                        <p class="text-white mt-2">"Debugged a C Segmentation Fault without crying."</p>
+                    </div>
+                </div>
+
+                <div>
+    <h2 class="text-4xl font-hero text-white mb-8">BRAIN DUMP</h2>
+    <div class="space-y-4">
+        
+        <a href="Brain Dump/c-pointers.html" class="group block">
+            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
+                <div>
+                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">Why I love/hate C Pointers</h4>
+                    <p class="text-sm text-gray-500 mt-1">5 min read • System</p>
+                </div>
+                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
+            </div>
+        </a>
+
+        <a href="Brain Dump/designs.html" class="group block">
+            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
+                <div>
+                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">Designing for College Clubs</h4>
+                    <p class="text-sm text-gray-500 mt-1">3 min read • Design</p>
+                </div>
+                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
+            </div>
+        </a>
+
+        <a href="Brain Dump/react.html" class="group block">
+            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
+                <div>
+                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">React vs The World</h4>
+                    <p class="text-sm text-gray-500 mt-1">10 min read • Frontend</p>
+                </div>
+                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
+            </div>
+        </a>
+
+    </div>
+</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="min-h-screen flex items-center justify-center relative bg-[#0f0f0f]">
+        <div class="absolute inset-0" style="background-image: radial-gradient(#2a2a2a 1px, transparent 1px); background-size: 30px 30px; opacity: 0.5;"></div>
+
+        <div class="z-10 w-full max-w-2xl px-6 text-center">
+            <h2 class="text-6xl font-hero text-white mb-2">CONTACT NISHANT</h2>
+            <p class="text-dp-red font-comic text-xl mb-12 rotate-[-2deg]">"Or send a carrier pigeon. I like birds."</p>
+
+            <form id="contactForm" class="space-y-6 text-left" onsubmit="sendMail(event)">
+                <div class="group">
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-dp-red transition-colors">Name / Alias</label>
+                    <input type="text" id="senderName" class="w-full bg-transparent border-b-2 border-gray-700 text-white p-2 focus:outline-none focus:border-dp-red transition-colors placeholder-gray-800" placeholder="Francis Freeman" required>
+                </div>
+                
+                <div class="group">
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-dp-red transition-colors">Your Mission</label>
+                    <textarea id="senderMessage" class="w-full bg-transparent border-b-2 border-gray-700 text-white p-2 focus:outline-none focus:border-dp-red transition-colors placeholder-gray-800 h-32 resize-none" placeholder="We need a website that doesn't explode..." required></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-4 bg-dp-red text-white font-hero tracking-widest text-xl hover:bg-white hover:text-dp-red transition-all duration-300 shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
+                    SEND TRANSMISSION
+                </button>
+            </form>
+
+            <div class="mt-16 flex justify-center gap-8">
+                <a href="https://github.com/nishantraj04" target="_blank" class="text-gray-500 hover:text-white transition-colors transform hover:scale-110" title="GitHub">
+                <i data-lucide="github" class="w-8 h-8"></i>
+                </a>
+
+                <a href="https://www.linkedin.com/in/nishantraj04" target="_blank" class="text-gray-500 hover:text-white transition-colors transform hover:scale-110" title="LinkedIn">
+                <i data-lucide="linkedin" class="w-8 h-8"></i>
+                </a>
+
+                <a href="mailto:nishant.raj0403@gmail.com" class="text-gray-500 hover:text-white transition-colors transform hover:scale-110" title="Email">
+                <i data-lucide="mail" class="w-8 h-8"></i>
+                </a>
+
+            </div>
+
+            
+
+            <footer class="mt-20 text-gray-600 text-sm">
+                <p>&copy; 2026 Nishant Raj. No students were harmed.</p>
+            </footer>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // MAILTO FUNCTIONALITY
+        function sendMail(event) {
+            event.preventDefault();
+            const name = document.getElementById('senderName').value;
+            const message = document.getElementById('senderMessage').value;
+            
+            // This opens the user's default email client
+            const subject = `Mission for Nishant from ${name}`;
+            const body = `Hey Nishant,\n\n${message}\n\n- ${name}`;
+            
+            // Add your actual email address here
+            window.location.href = `mailto:nishant.raj0403@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Add hover effect to cursor for links/buttons
+        const interactables = document.querySelectorAll('a, button, input, textarea, .cursor-pointer');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorOutline.style.backgroundColor = 'rgba(227, 0, 27, 0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // 3D Tilt Effect for Hero Card
+        const heroSection = document.querySelector('section:first-of-type');
+        const heroCard = document.getElementById('hero-card');
+
+        heroSection.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            
+            heroCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        heroSection.addEventListener('mouseleave', () => {
+            heroCard.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section > div').forEach(div => {
+            div.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(div);
+        });
+
+    </script>
+</body>
+</html>
