@@ -45,179 +45,60 @@
     </script>
 
     <style>
-        body {
-            background-color: #0f0f0f;
-            color: #f5f5f5;
-            cursor: none; /* Custom cursor */
-            overflow-x: hidden;
-        }
+        body { background-color: #0f0f0f; color: #f5f5f5; cursor: none; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #0f0f0f; }
+        ::-webkit-scrollbar-thumb { background: #890000; }
+        ::-webkit-scrollbar-thumb:hover { background: #e3001b; }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
         }
-        ::-webkit-scrollbar-track {
-            background: #0f0f0f; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #890000; 
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #e3001b; 
-        }
-
-        /* Custom Cursor */
-        .cursor-dot,
+        .cursor-dot { width: 8px; height: 8px; background-color: #e3001b; }
         .cursor-outline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #e3001b;
-        }
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #e3001b;
+            width: 40px; height: 40px; border: 2px solid #e3001b;
             transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
         
-        /* 3D Card Styles */
-        .perspective-container {
-            perspective: 1000px;
-        }
-        
-        .card-3d {
-            transition: transform 0.1s ease-out;
-            transform-style: preserve-3d;
-        }
-
-        .flip-card {
-            background-color: transparent;
-            perspective: 1000px;
-        }
-        
+        .perspective-container { perspective: 1000px; }
+        .card-3d { transition: transform 0.1s ease-out; transform-style: preserve-3d; }
+        .flip-card { background-color: transparent; perspective: 1000px; }
         .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.8s; transform-style: preserve-3d;
         }
-        
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
         .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
         }
-        
-        .flip-card-front {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-        }
-        
-        .flip-card-back {
-            background-color: #890000;
-            color: white;
-            transform: rotateY(180deg);
-            border: 1px solid #e3001b;
-        }
+        .flip-card-front { background-color: #1a1a1a; border: 1px solid #333; }
+        .flip-card-back { background-color: #890000; color: white; transform: rotateY(180deg); border: 1px solid #e3001b; }
 
-        /* Glitch Effect for text */
-        .glitch {
-            position: relative;
-        }
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0f0f0f;
+        .glitch { position: relative; }
+        .glitch::before, .glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; background: #0f0f0f;
         }
         .glitch::before {
-            left: 2px;
-            text-shadow: -1px 0 #ff00c1;
-            clip: rect(44px, 450px, 56px, 0);
+            left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim 5s infinite linear alternate-reverse;
         }
         .glitch::after {
-            left: -2px;
-            text-shadow: -1px 0 #00fff9;
-            clip: rect(44px, 450px, 56px, 0);
+            left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim2 5s infinite linear alternate-reverse;
         }
-        
-        @keyframes glitch-anim {
-            0% { clip: rect(13px, 9999px, 81px, 0); }
-            5% { clip: rect(79px, 9999px, 14px, 0); }
-            10% { clip: rect(36px, 9999px, 98px, 0); }
-            15% { clip: rect(15px, 9999px, 7px, 0); }
-            20% { clip: rect(98px, 9999px, 83px, 0); }
-            25% { clip: rect(42px, 9999px, 57px, 0); }
-            30% { clip: rect(62px, 9999px, 59px, 0); }
-            35% { clip: rect(21px, 9999px, 94px, 0); }
-            40% { clip: rect(8px, 9999px, 78px, 0); }
-            45% { clip: rect(58px, 9999px, 13px, 0); }
-            50% { clip: rect(96px, 9999px, 49px, 0); }
-            100% { clip: rect(55px, 9999px, 73px, 0); }
-        }
-        @keyframes glitch-anim2 {
-            0% { clip: rect(65px, 9999px, 100px, 0); }
-            100% { clip: rect(21px, 9999px, 6px, 0); }
-        }
+        @keyframes glitch-anim { 0% { clip: rect(13px, 9999px, 81px, 0); } 50% { clip: rect(96px, 9999px, 49px, 0); } 100% { clip: rect(55px, 9999px, 73px, 0); } }
+        @keyframes glitch-anim2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 100% { clip: rect(21px, 9999px, 6px, 0); } }
 
-        /* Comic Speech Bubble */
-        .speech-bubble {
-            position: relative;
-            background: #ffffff;
-            border-radius: .4em;
-            color: black;
-            font-family: 'Bangers', cursive;
-            letter-spacing: 1px;
-        }
+        .speech-bubble { position: relative; background: #ffffff; border-radius: .4em; color: black; font-family: 'Bangers', cursive; letter-spacing: 1px; }
         .speech-bubble:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border: 20px solid transparent;
-            border-top-color: #ffffff;
-            border-bottom: 0;
-            border-left: 0;
-            margin-left: -10px;
-            margin-bottom: -20px;
-        }
-
-        .blood-splatter {
-            position: absolute;
-            pointer-events: none;
-            opacity: 0.1;
-            z-index: 0;
+            content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 0;
+            border: 20px solid transparent; border-top-color: #ffffff; border-bottom: 0;
+            border-left: 0; margin-left: -10px; margin-bottom: -20px;
         }
     </style>
 </head>
@@ -226,13 +107,35 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <nav class="fixed w-full z-50 mix-blend-difference px-6 py-4 flex justify-between items-center">
-        <div class="text-2xl font-hero tracking-wider text-white glitch" data-text="FumbleBee">FumbleBee</div>
-        <div class="hidden md:flex gap-8 font-bold text-sm tracking-widest uppercase">
-            <a href="#about" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Who?</a>
-            <a href="#projects" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Stuff I Made</a>
-            <a href="#experience" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">The Grind</a>
-            <a href="#contact" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Call Me</a>
+<nav class="fixed w-full z-50 px-6 py-4">
+        <div class="flex justify-between items-center mix-blend-difference text-white">
+            
+            <div class="text-2xl font-hero tracking-wider glitch" data-text="FumbleBee">FumbleBee</div>
+            
+            <div class="hidden md:flex items-center gap-8 font-bold text-sm tracking-widest uppercase">
+                <a href="#about" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">About</a>
+                <a href="#projects" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Projects</a>
+                <a href="#education" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Education</a>
+                <a href="#contact" class="hover:text-dp-bright-red transition-colors hover:line-through decoration-2">Contact</a>
+                
+                <a href="#" 
+                   onclick="alert('🚧 SYSTEM ALERT: The dossier is currently being compiled. \n\n(Translation: I am updating my Resume. It will be uploaded soon!)'); return false;"
+                   class="ml-6 px-6 py-2 bg-dp-red text-white font-bold tracking-widest uppercase border-2 border-dp-red hover:bg-transparent hover:text-dp-red transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_15px_rgba(227,0,27,0.6)] hover:shadow-none">
+                    RESUME
+                </a>
+            </div>
+
+            <button class="md:hidden" onclick="toggleMobileMenu()">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#0f0f0f] border-b border-dp-red p-6 flex-col gap-6 text-center shadow-2xl z-50">
+            <a href="#about" class="block text-white font-hero text-2xl tracking-widest hover:text-dp-red" onclick="toggleMobileMenu()">About</a>
+            <a href="#projects" class="block text-white font-hero text-2xl tracking-widest hover:text-dp-red" onclick="toggleMobileMenu()">Projects</a>
+            <a href="#education" class="block text-white font-hero text-2xl tracking-widest hover:text-dp-red" onclick="toggleMobileMenu()">Education</a>
+            <a href="#contact" class="block text-white font-hero text-2xl tracking-widest hover:text-dp-red" onclick="toggleMobileMenu()">Contact</a>
+            <a href="#" onclick="alert('🚧 SYSTEM ALERT: I am updating my Resume. It will be uploaded soon'); toggleMobileMenu(); return false;" class="block text-dp-red font-hero text-2xl tracking-widest border border-dp-red py-2 mt-4">RESUME</a>
         </div>
     </nav>
 
@@ -257,7 +160,7 @@
             
             <button onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})" 
                 class="mt-12 px-8 py-4 bg-transparent border-2 border-dp-red text-white font-bold uppercase tracking-widest hover:bg-dp-red hover:shadow-[0_0_30px_rgba(227,0,27,0.6)] transition-all duration-300 group">
-                See My Work 
+                See My Projects
                 <i data-lucide="arrow-down" class="inline-block ml-2 group-hover:translate-y-1 transition-transform"></i>
             </button>
         </div>
@@ -287,121 +190,153 @@
             </div>
 
             <div>
-                <h2 class="text-6xl font-hero mb-8 text-white glitch" data-text="THE ORIGIN STORY">THE ORIGIN STORY</h2>
+                <h2 class="text-6xl font-hero mb-8 text-white glitch" data-text="ABOUT">ABOUT</h2>
                 <div class="space-y-6 text-lg text-gray-300">
                     <p class="border-l-4 border-dp-red pl-4">
-                        Look, I write code. I design things. Sometimes I make them move. 
-                        As a <span class="text-white font-bold">Computer Science Undergrad</span> and <span class="text-white font-bold">Graphic Designer</span>, 
-                        I bridge the gap between "Make it pretty" and "Make it work without exploding".
+                        Hello, I write code. I design things. Sometimes I make them move. 
+                        As a <span class="text-white font-bold">Computer Science Undergrad</span>, I bridge the gap between "Make it pretty" and "Make it work without exploding".
                     </p>
                     <p>
-                        I specialize in creating immersive web experiences that don't bore people to death. 
-                        My stack? React.js, Next.js, Node.js, and Java for when I feel like punishing myself.
+                         My stack? I build with React and Node.js for speed, and Java for when the project needs more 'Enterprise-grade' complexity (and more of my tears).
                     </p>
                     
-                    <div class="grid grid-cols-2 gap-4 mt-8">
-                        <div class="bg-dp-grey p-4 rounded hover:bg-dp-red transition-colors group cursor-crosshair">
-                            <h3 class="font-hero text-2xl text-white">Languages</h3>
-                            <p class="text-sm text-gray-400 group-hover:text-white">Java, Python, C, SQL(MySQL)</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+                        
+                        <div class="bg-[#1a1a1a] border border-gray-800 p-5 rounded hover:bg-dp-red hover:border-dp-red transition-all duration-300 group cursor-crosshair hover:-translate-y-1 shadow-lg">
+                            <h3 class="font-hero text-2xl text-white mb-2 tracking-wide">Languages & Logic</h3>
+                            <p class="text-sm text-gray-400 group-hover:text-white leading-relaxed font-mono">Java, JavaScript, Python, C, C++</p>
                         </div>
-                        <div class="bg-dp-grey p-4 rounded hover:bg-dp-red transition-colors group cursor-crosshair">
-                            <h3 class="font-hero text-2xl text-white">Web Technologies</h3>
-                            <p class="text-sm text-gray-400 group-hover:text-white">HTML5, CSS3, React.js, Next.js</p>
+
+                        <div class="bg-[#1a1a1a] border border-gray-800 p-5 rounded hover:bg-dp-red hover:border-dp-red transition-all duration-300 group cursor-crosshair hover:-translate-y-1 shadow-lg">
+                            <h3 class="font-hero text-2xl text-white mb-2 tracking-wide">Frontend & Design</h3>
+                            <p class="text-sm text-gray-400 group-hover:text-white leading-relaxed font-mono">HTML5, CSS3, React.js, Tailwind CSS, Figma, Canva</p>
                         </div>
-                        <div class="bg-dp-grey p-4 rounded hover:bg-dp-red transition-colors group cursor-crosshair">
-                            <h3 class="font-hero text-2xl text-white">Tools</h3>
-                            <p class="text-sm text-gray-400 group-hover:text-white">GitHub, VS Code </p>
+
+                        <div class="bg-[#1a1a1a] border border-gray-800 p-5 rounded hover:bg-dp-red hover:border-dp-red transition-all duration-300 group cursor-crosshair hover:-translate-y-1 shadow-lg">
+                            <h3 class="font-hero text-2xl text-white mb-2 tracking-wide">Backend, Database & Auth</h3>
+                            <p class="text-sm text-gray-400 group-hover:text-white leading-relaxed font-mono">Node.js, Express.js, Supabase, MongoDB, PostgreSQL</p>
                         </div>
-                        <div class="bg-dp-grey p-4 rounded hover:bg-dp-red transition-colors group cursor-crosshair">
-                            <h3 class="font-hero text-2xl text-white">Design</h3>
-                            <p class="text-sm text-gray-400 group-hover:text-white">Adobe Creative, Canva</p>
+
+                        <div class="bg-[#1a1a1a] border border-gray-800 p-5 rounded hover:bg-dp-red hover:border-dp-red transition-all duration-300 group cursor-crosshair hover:-translate-y-1 shadow-lg">
+                            <h3 class="font-hero text-2xl text-white mb-2 tracking-wide">Deployment & Tools</h3>
+                            <p class="text-sm text-gray-400 group-hover:text-white leading-relaxed font-mono">GitHub, VS Code, Vercel, Render, Git, Resend</p>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-<section id="projects" class="py-20 px-6 bg-[#0a0a0a]">
-    <div class="max-w-7xl mx-auto">
-        <h2 class="text-5xl md:text-7xl font-hero mb-4 text-center text-white"><span class="text-dp-red">MISSION</span> REPORT</h2>
-        <p class="text-center text-gray-400 mb-16 font-comic text-xl tracking-wide">"I did these. Totally legal."</p>
+    <section id="projects" class="py-20 px-6 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-hero mb-4 text-center text-white"><span class="text-dp-red">CURRENT</span> PROJECTS</h2>
+            <p class="text-center text-gray-400 mb-16 font-comic text-xl tracking-wide">"I did these with help of <b>caffeine</b>."</p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <div class="h-[400px] w-full flip-card cursor-pointer">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front p-8">
-                        <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                            <i data-lucide="users" class="text-white w-8 h-8"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="h-[400px] w-full flip-card cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front p-8">
+                            <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                                <i data-lucide="users" class="text-white w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-3xl font-hero text-white mb-2">TeamUp</h3>
+                            <p class="text-gray-400 text-sm">Hackathon Team Finder</p>
+                            <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
                         </div>
-                        <h3 class="text-3xl font-hero text-white mb-2">TeamUp</h3>
-                        <p class="text-gray-400 text-sm">Hackathon Team Finder</p>
-                        <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
-                    </div>
-                    <div class="flip-card-back p-8">
-                        <h3 class="text-2xl font-hero mb-4">The Tech Stack</h3>
-                        <ul class="text-left space-y-2 mb-6 font-mono text-sm">
-                            <li>> React (Vite) + Custom CSS</li>
-                            <li>> Node.js + Express (Render)</li>
-                            <li>> MongoDB Atlas (Database)</li>
-                            <li>> Axios (API Calls)</li>
-                        </ul>
-                        <a href="https://team-up-project.vercel.app" target="_blank" class="bg-white text-dp-red px-6 py-2 font-bold uppercase text-sm hover:bg-gray-200 inline-block">
-                            View Project
-                        </a>
+                        <div class="flip-card-back p-8">
+                            <h3 class="text-2xl font-hero mb-4">The Tech Stack</h3>
+                            <ul class="text-left space-y-2 mb-6 font-mono text-sm">
+                                <li>> React (Vite) + Custom CSS</li>
+                                <li>> Node.js + Express (Render)</li>
+                                <li>> MongoDB Atlas + Mongoose</li>
+                                <li>> Axios (API Integration)</li>
+                            </ul>
+                            
+                            <div class="flex flex-col gap-3 w-full mt-6">
+                                <a href="https://team-up-project.vercel.app" target="_blank" class="bg-white text-dp-red px-4 py-2 font-bold uppercase text-sm hover:bg-gray-200 flex items-center justify-center gap-2">
+                                    <i data-lucide="external-link" class="w-4 h-4"></i> Live Demo
+                                </a>
+                                <a href="https://github.com/nishantraj04/TeamUp-Project" target="_blank" class="border border-white text-white px-4 py-2 font-bold uppercase text-sm hover:bg-white/10 flex items-center justify-center gap-2">
+                                    <i data-lucide="github" class="w-4 h-4"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="h-[400px] w-full flip-card cursor-pointer">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front p-8">
-                        <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                            <i data-lucide="briefcase" class="text-white w-8 h-8"></i>
+                <div class="h-[400px] w-full flip-card cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front p-8">
+                            <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                                <i data-lucide="briefcase" class="text-white w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-3xl font-hero text-white mb-2">JobTracker Pro</h3>
+                            <p class="text-gray-400 text-sm">Application Tracking Dashboard</p>
+                            <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
                         </div>
-                        <h3 class="text-3xl font-hero text-white mb-2">JOB HUNTER</h3>
-                        <p class="text-gray-400 text-sm">Application Tracker</p>
-                        <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
-                    </div>
-                    <div class="flip-card-back p-8">
-                        <h3 class="text-2xl font-hero mb-4">The Tech Stack</h3>
-                        <ul class="text-left space-y-2 mb-6 font-mono text-sm">
-                            <li>> React + TypeScript (UI)</li>
-                            <li>> Tailwind CSS (Styling)</li>
-                            <li>> Supabase + PostgreSQL (DB)</li>
-                            <li>> Vercel (Deployment)</li>
-                        </ul>
-                        <a href="https://job-tracker-six-iota.vercel.app" target="_blank" class="bg-white text-dp-red px-6 py-2 font-bold uppercase text-sm hover:bg-gray-200 inline-block">
-                            View Project
-                        </a>
+                        <div class="flip-card-back p-8">
+                            <h3 class="text-2xl font-hero mb-4">The Tech Stack</h3>
+                            <ul class="text-left space-y-2 mb-6 font-mono text-sm">
+                                <li>> React 18 + TypeScript</li>
+                                <li>> Tailwind CSS (Dark Mode)</li>
+                                <li>> Supabase (Auth + DB + Storage)</li>
+                                <li>> Vercel (Deployment)</li>
+                            </ul>
+                            
+                            <div class="flex flex-col gap-3 w-full mt-6">
+                                <a href="https://job-tracker-six-iota.vercel.app" target="_blank" class="bg-white text-dp-red px-4 py-2 font-bold uppercase text-sm hover:bg-gray-200 flex items-center justify-center gap-2">
+                                    <i data-lucide="external-link" class="w-4 h-4"></i> Live Demo
+                                </a>
+                                <a href="https://github.com/nishantraj04/job-tracker" target="_blank" class="border border-white text-white px-4 py-2 font-bold uppercase text-sm hover:bg-white/10 flex items-center justify-center gap-2">
+                                    <i data-lucide="github" class="w-4 h-4"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="h-[400px] w-full flip-card cursor-pointer">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front p-8">
-                        <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                            <i data-lucide="palette" class="text-white w-8 h-8"></i>
+                <div class="h-[400px] w-full flip-card cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front p-8">
+                            <div class="bg-dp-red w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                                <i data-lucide="code-2" class="text-white w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-3xl font-hero text-white mb-2">Portfolio Website</h3>
+                            <p class="text-gray-400 text-sm">The Recursive Project</p>
+                            <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
                         </div>
-                        <h3 class="text-3xl font-hero text-white mb-2">Graphic Designs</h3>
-                        <p class="text-gray-400 text-sm">SOA English Café</p>
-                        <div class="mt-8 text-xs font-mono text-dp-red border border-dp-red px-2 py-1 rounded">HOVER FOR DETAILS</div>
-                    </div>
-                    <div class="flip-card-back p-8">
-                        <h3 class="text-2xl font-hero mb-4">Visual Goodness</h3>
-                        <p class="text-sm mb-6">Posters, flyers, and event assets for "Dusshera Chronicles", "The Socrates Trial", "The Odyssey" etc.</p>
-                        <button class="bg-white text-dp-red px-6 py-2 font-bold uppercase text-sm hover:bg-gray-200">View Gallery</button>
+                        <div class="flip-card-back p-8">
+                            <h3 class="text-2xl font-hero mb-4">The Tech Stack</h3>
+                            <ul class="text-left space-y-2 mb-6 font-mono text-sm">
+                                <li>> HTML5 + Tailwind (CDN)</li>
+                                <li>> Vanilla JavaScript (ES6+)</li>
+                                <li>> Lucide Icons + Google Fonts</li>
+                                <li>> GitHub Pages (Hosting)</li>
+                            </ul>
+                            
+                            <div class="w-full space-y-3 mt-4">
+                                <div class="border border-white/20 bg-black/40 p-2 rounded">
+                                    <div class="flex items-center justify-center gap-2 mb-1">
+                                        <span class="w-2 h-2 bg-dp-bright-red rounded-full animate-pulse"></span>
+                                        <span class="text-dp-bright-red font-mono font-bold text-xs uppercase tracking-widest">SYSTEM ACTIVE</span>
+                                    </div>
+                                    <p class="text-xs text-gray-400">You are currently viewing it live.</p>
+                                </div>
+                                <a href="https://github.com/nishantraj04/nishantraj04.github.io" target="_blank" class="w-full border border-white text-white px-4 py-2 font-bold uppercase text-sm hover:bg-white/10 flex items-center justify-center gap-2">
+                                    <i data-lucide="github" class="w-4 h-4"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-    <section id="experience" class="py-20 px-6 bg-dp-dark relative overflow-hidden">
+    <section id="education" class="py-20 px-6 bg-dp-dark relative overflow-hidden">
         <div class="absolute top-0 right-0 text-[20rem] font-hero text-[#151515] select-none -z-10 leading-none">XP</div>
         
         <div class="max-w-4xl mx-auto">
@@ -415,7 +350,20 @@
                         <span class="text-dp-red font-mono text-sm">2023-27 </span>
                         <h3 class="text-2xl font-bold text-white mt-1">B. Tech (CSE)</h3>
                         <p class="text-gray-400 text-sm font-light italic">ITER | SOA University | Bhubaneswar</p>
-                        <p class="mt-4 text-gray-300">Pre-final year Computer Science undergraduate bridging the gap between code and design as a Graphic Designer for the SOA English Café.</p>
+                        <ul class="mt-4 space-y-2 text-gray-300 text-sm font-mono">
+                            <li class="flex items-start">
+                                <span class="text-dp-red mr-2">▶</span> 
+                                Bridging the gap between core logic and immersive design.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-dp-red mr-2">▶</span> 
+                                Visual Designer for the SOA English Café.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-dp-red mr-2">▶</span> 
+                                Maintaining a GPA that keeps my parents from changing the locks.
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -425,7 +373,16 @@
                         <span class="text-dp-red font-mono text-sm">2020-22</span>
                         <h3 class="text-2xl font-bold text-white mt-1">12th (CBSE – PCM)</h3>
                         <p class="text-gray-400 text-sm font-light italic">Chinmaya Vidyalaya, South Park | Jamshedpur</p>
-                        <p class="mt-4 text-gray-300">Developed rigorous problem-solving and logical reasoning skills through the PCM curriculum.</p>
+                        <ul class="mt-4 space-y-2 text-gray-300 text-sm font-mono">
+                            <li class="flex items-start">
+                                <span class="text-dp-red mr-2">▶</span> 
+                                Spent two years deriving formulas that I now just import using libraries.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-dp-red mr-2">▶</span> 
+                                Mastered the art of solving for X while wondering why Y is so complicated.
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -435,7 +392,16 @@
                         <span class="text-dp-red font-mono text-sm">2008-20</span>
                         <h3 class="text-2xl font-bold text-white mt-1">10th (ICSE)</h3>
                         <p class="text-gray-400 text-sm font-light italic"> Kerala Samajam Model School | Jamshedpur</p>
-                        <p class="mt-4 text-gray-300">Built a solid base in core sciences while developing strong communication skills under the ICSE board.</p>
+                        <ul class="mt-4 space-y-2 text-gray-300 text-sm font-mono">
+                            <li class="flex items-start">
+                                <span class="text-dp-red mr-2">▶</span> 
+                                The "Hello World" era. I wrote my first line of Java and realized compilation errors are my love language.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-dp-red mr-2">▶</span> 
+                                Learned the laws of Thermodynamics just to ignore them when overclocking my CPU.
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -452,54 +418,52 @@
                     <div class="flex flex-wrap gap-4" id="interests-container">
                         <span class="px-6 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer text-lg font-bold">💻 Coding</span>
                         <span class="px-6 py-3 border border-dp-red rounded-full text-dp-red hover:bg-dp-red hover:text-white transition-colors duration-300 cursor-pointer text-lg font-bold">🚶 Having a Walk</span>
-                        <span class="px-6 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer text-lg font-bold">🎥 Watching Movies & Web Series</span>
+                        <span class="px-6 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer text-lg font-bold">🎥 Movies & Series</span>
                         <span class="px-6 py-3 border border-dp-red rounded-full text-dp-red hover:bg-dp-red hover:text-white transition-colors duration-300 cursor-pointer text-lg font-bold">🎨 Graphic Design</span>
-                        <span class="px-6 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer text-lg font-bold">🐬 Animal Documentaries</span>
+                        <span class="px-6 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer text-lg font-bold">🐬 Nature Docs</span>
                         <span class="px-6 py-3 border border-dp-red rounded-full text-dp-red hover:bg-dp-red hover:text-white transition-colors duration-300 cursor-pointer text-lg font-bold">😋 Fast Food</span>
                     </div>
                     
                     <div class="mt-12 p-6 bg-dp-grey rounded border-l-8 border-dp-red transform rotate-1 hover:rotate-0 transition-transform">
                         <h3 class="font-comic text-2xl text-dp-bright-red">ACHIEVEMENT UNLOCKED:</h3>
-                        <p class="text-white mt-2">"Debugged a C Segmentation Fault without crying."</p>
+                        <p class="text-white mt-2">"Finally understood how <b><i>this</i></b> works in JavaScript. (I think.)"</p>
                     </div>
                 </div>
 
                 <div>
-    <h2 class="text-4xl font-hero text-white mb-8">BRAIN DUMP</h2>
-    <div class="space-y-4">
-        
-        <a href="Brain Dump/c-pointers.html" class="group block">
-            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
-                <div>
-                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">Why I love/hate C Pointers</h4>
-                    <p class="text-sm text-gray-500 mt-1">5 min read • System</p>
-                </div>
-                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
-            </div>
-        </a>
+                    <h2 class="text-4xl font-hero text-white mb-8">THOUGHTS</h2>
+                    <div class="space-y-4">
+                        <a href="THOUGHTS/c-pointers.html" class="group block">
+                            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">Why I love/hate C Pointers</h4>
+                                    <p class="text-sm text-gray-500 mt-1">5 min read • System</p>
+                                </div>
+                                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
+                            </div>
+                        </a>
 
-        <a href="Brain Dump/designs.html" class="group block">
-            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
-                <div>
-                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">Designing for College Clubs</h4>
-                    <p class="text-sm text-gray-500 mt-1">3 min read • Design</p>
-                </div>
-                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
-            </div>
-        </a>
+                        <a href="THOUGHTS/designs.html" class="group block">
+                            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">Designing for College Clubs</h4>
+                                    <p class="text-sm text-gray-500 mt-1">3 min read • Design</p>
+                                </div>
+                                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
+                            </div>
+                        </a>
 
-        <a href="Brain Dump/react.html" class="group block">
-            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
-                <div>
-                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">React vs The World</h4>
-                    <p class="text-sm text-gray-500 mt-1">10 min read • Frontend</p>
+                        <a href="THOUGHTS/react.html" class="group block">
+                            <div class="flex justify-between items-end border-b border-gray-800 pb-2 group-hover:border-dp-red transition-colors">
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-200 group-hover:text-dp-red transition-colors">React vs The World</h4>
+                                    <p class="text-sm text-gray-500 mt-1">10 min read • Frontend</p>
+                                </div>
+                                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all"></i>
-            </div>
-        </a>
-
-    </div>
-</div>
             </div>
         </div>
     </section>
@@ -507,42 +471,37 @@
     <section id="contact" class="min-h-screen flex items-center justify-center relative bg-[#0f0f0f]">
         <div class="absolute inset-0" style="background-image: radial-gradient(#2a2a2a 1px, transparent 1px); background-size: 30px 30px; opacity: 0.5;"></div>
 
-        <div class="z-10 w-full max-w-2xl px-6 text-center">
-            <h2 class="text-6xl font-hero text-white mb-2">CONTACT NISHANT</h2>
+        <div class="z-10 w-full max-w-2xl px-6 text-center pt-20 pb-10">
+            <h2 class="text-6xl font-hero text-white mb-2">CONTACT VIA MAIL</h2>
             <p class="text-dp-red font-comic text-xl mb-12 rotate-[-2deg]">"Or send a carrier pigeon. I like birds."</p>
 
             <form id="contactForm" class="space-y-6 text-left" onsubmit="sendMail(event)">
                 <div class="group">
-                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-dp-red transition-colors">Name / Alias</label>
-                    <input type="text" id="senderName" class="w-full bg-transparent border-b-2 border-gray-700 text-white p-2 focus:outline-none focus:border-dp-red transition-colors placeholder-gray-800" placeholder="Francis Freeman" required>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-dp-red transition-colors">Name</label>
+                    <input type="text" id="senderName" class="w-full bg-transparent border-b-2 border-gray-700 text-white p-2 focus:outline-none focus:border-dp-red transition-colors placeholder-gray-800" placeholder="Nishant" required>
                 </div>
                 
                 <div class="group">
-                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-dp-red transition-colors">Your Mission</label>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-dp-red transition-colors">MESSAGE</label>
                     <textarea id="senderMessage" class="w-full bg-transparent border-b-2 border-gray-700 text-white p-2 focus:outline-none focus:border-dp-red transition-colors placeholder-gray-800 h-32 resize-none" placeholder="We need a website that doesn't explode..." required></textarea>
                 </div>
 
                 <button type="submit" class="w-full py-4 bg-dp-red text-white font-hero tracking-widest text-xl hover:bg-white hover:text-dp-red transition-all duration-300 shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
-                    SEND TRANSMISSION
+                    SEND MAIL
                 </button>
             </form>
 
             <div class="mt-16 flex justify-center gap-8">
                 <a href="https://github.com/nishantraj04" target="_blank" class="text-gray-500 hover:text-white transition-colors transform hover:scale-110" title="GitHub">
-                <i data-lucide="github" class="w-8 h-8"></i>
+                    <i data-lucide="github" class="w-8 h-8"></i>
                 </a>
-
                 <a href="https://www.linkedin.com/in/nishantraj04" target="_blank" class="text-gray-500 hover:text-white transition-colors transform hover:scale-110" title="LinkedIn">
-                <i data-lucide="linkedin" class="w-8 h-8"></i>
+                    <i data-lucide="linkedin" class="w-8 h-8"></i>
                 </a>
-
                 <a href="mailto:nishant.raj0403@gmail.com" class="text-gray-500 hover:text-white transition-colors transform hover:scale-110" title="Email">
-                <i data-lucide="mail" class="w-8 h-8"></i>
+                    <i data-lucide="mail" class="w-8 h-8"></i>
                 </a>
-
             </div>
-
-            
 
             <footer class="mt-20 text-gray-600 text-sm">
                 <p>&copy; 2026 Nishant Raj. Powered by Caffeine.</p>
@@ -553,6 +512,13 @@
     <script>
         // Initialize Icons
         lucide.createIcons();
+
+        // MOBILE MENU TOGGLE
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex'); // Switch to flexbox to stack items vertically
+        }
 
         // MAILTO FUNCTIONALITY
         function sendMail(event) {
@@ -614,9 +580,7 @@
         });
 
         // Scroll Reveal Animation
-        const observerOptions = {
-            threshold: 0.1
-        };
+        const observerOptions = { threshold: 0.1 };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -631,7 +595,6 @@
             div.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
             observer.observe(div);
         });
-
     </script>
 </body>
 </html>

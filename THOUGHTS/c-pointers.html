@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why I Hate C Pointers | Nishant Raj</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'dp-dark': '#0f0f0f', 'dp-red': '#890000', 'dp-white': '#f5f5f5' },
+                    fontFamily: { 'hero': ['Anton', 'sans-serif'], 'body': ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f0f0f; color: #f5f5f5; }
+        .prose p { margin-bottom: 1.5rem; line-height: 1.8; color: #d1d5db; font-size: 1.1rem; }
+        .prose h3 { color: white; font-size: 1.75rem; font-weight: bold; margin-top: 2.5rem; margin-bottom: 1rem; font-family: 'Anton', sans-serif; letter-spacing: 1px; }
+        .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; color: #d1d5db; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose code { background-color: #2a2a2a; color: #e3001b; padding: 0.2rem 0.4rem; rounded: 0.25rem; font-family: monospace; font-size: 0.9em; }
+        .prose pre { background-color: #1a1a1a; padding: 1rem; border-left: 4px solid #890000; overflow-x: auto; margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body class="font-body p-6 md:p-12 max-w-3xl mx-auto selection:bg-dp-red selection:text-white">
+
+    <a href="../index.html" class="group inline-flex items-center text-gray-500 hover:text-white transition-colors mb-12">
+        <i data-lucide="arrow-left" class="mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+        BACK TO BASE
+    </a>
+
+    <header class="mb-12 border-b border-gray-800 pb-8">
+        <span class="text-dp-red font-bold tracking-widest text-xs uppercase bg-dp-red/10 px-2 py-1 rounded">SYSTEM PROGRAMMING</span>
+        <h1 class="text-4xl md:text-6xl font-hero mt-4 mb-6 leading-tight text-white">
+            WHY I HATE C POINTERS (AND WHY I CAN'T QUIT THEM)
+        </h1>
+        <div class="flex items-center text-gray-500 text-sm font-mono">
+            <span>Nishant Raj</span>
+            <span class="mx-3 text-dp-red">•</span>
+            <span>Feb 2026</span>
+            <span class="mx-3 text-dp-red">•</span>
+            <span>6 min read</span>
+        </div>
+    </header>
+
+    <article class="prose">
+        <p class="text-xl text-white font-medium border-l-4 border-dp-red pl-4 italic mb-8">
+            "C is a language that treats you like a consenting adult. If you ask it to overwrite the operating system kernel with a picture of a cat, it will try its best to comply."
+        </p>
+
+        <p>
+            I remember the exact moment my soul left my body during my first Computer Science semester. It wasn't loops. It wasn't arrays. It was the moment the professor drew a box on the whiteboard, drew an arrow pointing to another box, and said, <em>"The variable doesn't hold the value. It holds the address of the value."</em>
+        </p>
+
+        <p>
+            Welcome to Pointers. The reason I drink coffee at 3 AM. The reason I have trust issues. And the reason C is the most powerful (and hated) language in my arsenal.
+        </p>
+
+        <h3>Reason 1: The Syntax Identity Crisis</h3>
+        <p>
+            Let’s talk about the asterisk <code>*</code>. In math, it means multiplication. In C, it means "I am about to ruin your day."
+        </p>
+        <p>
+            The problem is that C uses the same symbol for two completely opposite things, often in the same breath:
+        </p>
+        <ul>
+            <li><strong>Declaration:</strong> <code>int *ptr;</code> means "I am a variable that stores an address."</li>
+            <li><strong>Dereferencing:</strong> <code>*ptr = 10;</code> means "Go to the address I point to and change the value inside."</li>
+        </ul>
+        <p>
+            It’s like nodding your head. Sometimes it means "Yes," sometimes it means "I understand," and in C, sometimes it means "Please crash the program immediately." If you forget the asterisk during assignment, you aren't changing the value—you're changing the <em>address</em>. Suddenly, your program is trying to write data into a random memory slot reserved for the cooling fan driver.
+        </p>
+
+        <h3>Reason 2: Pointer Arithmetic (Math that Kills)</h3>
+        <p>
+            In normal life, if you have a number <code>1000</code> and you add <code>1</code>, you get <code>1001</code>. Simple, right?
+        </p>
+        <p>
+            In C, if you have a pointer <code>int *ptr</code> pointing to address <code>1000</code>, and you do <code>ptr + 1</code>, you do <strong>not</strong> get <code>1001</code>. You get <code>1004</code> (assuming a 4-byte integer).
+        </p>
+        <p>
+            Why? Because C assumes that if you are adding 1 to a pointer, you don't want the next <em>byte</em>, you want the next <em>integer</em>. This is actually brilliant for iterating through arrays, but it's a nightmare for debugging.
+        </p>
+        <pre><code class="text-gray-400">char *c = 1000;
+c + 1; // Result: 1001
+
+int *i = 1000;
+i + 1; // Result: 1004
+
+double *d = 1000;
+d + 1; // Result: 1008</code></pre>
+        <p>
+            It’s silent logic. If you mess up the type of your pointer, your math will be wrong, but the compiler won't warn you. It will just let you jump into the wrong memory address and read garbage data. It's like trying to walk through a minefield while wearing a blindfold.
+        </p>
+
+        <h3>Reason 3: Segmentation Fault (Core Dumped)</h3>
+        <p>
+            If you code in Python or Java, you get nice error messages like <code>NullPointerException</code> or <code>IndexOutOfBounds</code>. They hold your hand. They tell you where it hurts.
+        </p>
+        <p>
+            C gives you this:
+        </p>
+        <pre><code class="text-gray-400">Segmentation fault (core dumped)</code></pre>
+        <p>
+            That’s it. No line number. No explanation. Just a digital middle finger.
+        </p>
+        <p>
+            A Segfault basically means you tried to touch memory that doesn't belong to you. Maybe you initialized a pointer but didn't give it an address <code>int *p = NULL;</code>, and then tried to write to it. It’s the digital equivalent of walking into a stranger's house and trying to rearrange their furniture. The Operating System (the police) kicks you out immediately.
+        </p>
+        <p>
+            I once spent 6 hours debugging a segfault only to realize I had written <code>scanf("%d", n)</code> instead of <code>scanf("%d", &n)</code>. I was trying to write the user's input into memory address "5". The OS did not like that.
+        </p>
+
+        <h3>Reason 4: Double Pointers (The Inception Layer)</h3>
+        <p>
+            Just when you think you understand pointers, C introduces <code>int **ptr</code>. A pointer to a pointer.
+        </p>
+        <p>
+            Why? Why would anyone do this? Usually, it's for dynamic 2D arrays or modifying a pointer inside a function. But visually tracking "The address of the variable that holds the address of the value" requires a level of mental gymnastics that usually leads to a headache.
+        </p>
+        <p>
+            And it doesn't stop there. You can have <code>***ptr</code>. I’ve seen <code>****ptr</code> in legacy codebases. At that point, you aren't coding; you're deciphering ancient hieroglyphs.
+        </p>
+
+        <h3>Reason 5: Malloc, Calloc, and the Art of Forgetting</h3>
+        <p>
+            In modern languages, a Garbage Collector follows you around like a maid, cleaning up your memory mess. In C, <strong>you</strong> are the maid.
+        </p>
+        <p>
+            If you use <code>malloc()</code> to ask for memory, you essentially borrow money from the OS.
+        </p>
+        <pre><code>int *arr = (int*)malloc(100 * sizeof(int));</code></pre>
+        <p>
+            Great, you have space for 100 integers. But if you forget to write <code>free(arr)</code> at the end? That memory is gone. It’s held hostage until your computer reboots. Do this inside a loop, and you have a <strong>Memory Leak</strong>. Your computer gets slower, the fans spin louder, and eventually, everything freezes.
+        </p>
+
+        <h3>Why I Can't Quit Them</h3>
+        <p>
+            After reading all that, you’d think I’d switch to Python and never look back. But I can't.
+        </p>
+        <p>
+            Because when you master pointers, you aren't just writing code—you are manipulating the machine itself.
+        </p>
+        <ul>
+            <li><strong>Speed:</strong> Passing a pointer to a massive structure is instant. Passing the value requires copying gigabytes of data. Pointers are efficient.</li>
+            <li><strong>Control:</strong> You decide exactly how memory is laid out. No hidden overhead. No magic.</li>
+            <li><strong>The Flex:</strong> Let’s be honest. Debugging a double pointer linked list makes you feel like a wizard.</li>
+        </ul>
+        <p>
+            I hate pointers because they punish me for every tiny mistake. But I love them because they force me to understand how the computer <em>actually</em> works. It’s a toxic relationship, but it’s the most educational one I have.
+        </p>
+        <p>
+            Now, if you'll excuse me, I have to go debug a memory leak.
+        </p>
+
+    </article>
+
+    <footer class="mt-20 pt-8 border-t border-gray-800 text-center text-gray-600 text-sm">
+        <p>&copy; 2026 Nishant Raj. Powered by Caffeine.</p>
+    </footer>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
